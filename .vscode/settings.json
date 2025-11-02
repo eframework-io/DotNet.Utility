@@ -1,0 +1,6 @@
+{
+    "dotnet.defaultSolution": "src/EFramework.DotNet.Utility.sln",
+    "dotrush.roslyn.projectOrSolutionFiles": [
+        "src/EFramework.DotNet.Utility.sln"
+    ]
+}

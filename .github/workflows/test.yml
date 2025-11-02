@@ -1,0 +1,79 @@
+name: 单元测试
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_frameworks:
+        description: "输入测试环境（参考：https://learn.microsoft.com/zh-cn/dotnet/standard/frameworks）"
+        required: false
+        type: string
+        default: '["net9.0", "net8.0"]'
+  workflow_call:
+    inputs:
+      target_frameworks:
+        description: "输入测试环境（参考：https://learn.microsoft.com/zh-cn/dotnet/standard/frameworks）"
+        required: false
+        type: string
+        default: '["net9.0", "net8.0"]'
+
+permissions:
+  checks: write
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  test:
+    name: 测试 ${{ matrix.targetFramework }} 环境
+    runs-on: ubuntu-latest
+    env:
+      TZ: "Asia/Shanghai"
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+    strategy:
+      fail-fast: false
+      matrix:
+        targetFramework: ${{ fromJson(github.event.inputs.target_frameworks || inputs.target_frameworks || '["net9.0", "net8.0"]') }}
+
+    steps:
+      - name: 检出项目仓库
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: 设置测试环境
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            9.0.x
+            8.0.x
+
+      - name: 运行单元测试
+        run: |
+          cd src 
+          dotnet test \
+            --configuration Release \
+            --framework ${{ matrix.targetFramework }} \
+            --verbosity normal \
+            --logger "trx;LogFileName=Output.trx" \
+            --logger "console;verbosity=normal" \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ../Results
+
+      - name: 生成测试报告
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          reportgenerator \
+            -reports:Results/**/coverage.cobertura.xml \
+            -targetdir:Results/Coverage \
+            -reporttypes:Html
+
+      - name: 上传测试报告
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: Test#${{ github.run_number }}.${{ matrix.targetFramework }}.Reports
+          path: |
+            Results/Output.trx
+            Results/Coverage
+          retention-days: 14

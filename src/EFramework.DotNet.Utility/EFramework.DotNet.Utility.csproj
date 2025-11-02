@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="prometheus-net" Version="8.2.1" />
+    <PackageReference Include="SharpZipLib" Version="1.4.2" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>EFramework.DotNet.Utility</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>EFramework Innovation</Authors>
+    <Description>提供了基于 .NET 的配置管理、任务调度、日志记录、事件系统、文件处理等基础功能模块。</Description>
+    <RepositoryUrl>https://github.com/eframework-io/DotNet.Utility.git</RepositoryUrl>
+    <PackageTags>eframework dotnet utility</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../CHANGELOG.md" Pack="true" PackagePath="" />
+    <None Include="../../CONTRIBUTING.md" Pack="true" PackagePath="" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="" />
+    <None Include="../../README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>
