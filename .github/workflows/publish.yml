@@ -151,7 +151,7 @@ jobs:
             --api-key ${{ secrets.NUGET_PUBLISH }} \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
-          echo "注册表：https://www.nuget.org/packages/$(basename "$(find ./src -maxdepth 1 -name '*.sln' | head -n 1)" .sln)"
+          echo "注册表：https://www.nuget.org/packages/$(basename "$(find . -maxdepth 1 -name '*.sln' | head -n 1)" .sln)"
 
       - name: 提交版本标签
         shell: bash
